@@ -53,8 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !$finished) {
         if ($exact == $NUM_DIGITS) {
             $_SESSION['finished'] = true;
             $_SESSION['won'] = true;
+            header("Location: resultado.php");
+            exit;
         } elseif (count($_SESSION['attempts']) >= $MAX_ATTEMPTS) {
             $_SESSION['finished'] = true;
+            $_SESSION['won'] = false;
+            header("Location: resultado.php");
+            exit;
         }
 
         header("Location: index.php");
@@ -69,7 +74,6 @@ $remaining = $MAX_ATTEMPTS - count($_SESSION['attempts']);
 <head>
 <meta charset="utf-8">
 <title>Mastermind Numérico</title>
-<link rel="stylesheet" href="estilos.css"> 
 </head>
 <body>
 
@@ -100,7 +104,11 @@ $remaining = $MAX_ATTEMPTS - count($_SESSION['attempts']);
       </tr>
     <?php endforeach; ?>
   </table>
-  <?php endif; ?> 
+  <?php endif; ?>
+
+  <?php if ($finished): ?>
+    <p><a href="?reset=1"><button>Jugar otra vez</button></a></p>
+  <?php endif; ?>
 
 </div>
 
